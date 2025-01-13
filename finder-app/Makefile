@@ -1,13 +1,21 @@
-#set the defualt complier to be gcc unless prviding the CROSS_COMPILE
-#varibale on make command line.
+# Set the default compiler to gcc, unless CROSS_COMPILE is specified on the command line.
 CC := $(CROSS_COMPILE)gcc
 
+# The default target to build the 'writer' application
+all: writer
 
-# Target to build the executable
-writer: writer.c
-	@$(CC) writer.c -o writer
+# Target to build the 'writer' executable
+writer: writer.o
+	$(CC) -o writer writer.o
 
-# Clean up build artifacts
+# Rule to compile the 'writer.c' source file
+writer.o: writer.c
+	$(CC) -c writer.c -o writer.o
+
+# Clean up build artifacts (remove the 'writer' executable and all .o files)
 clean:
-	@rm -f *.o writer
+	rm -f writer writer.o
+
+# Phony targets to avoid conflicts with file names
+.PHONY: all clean
 
